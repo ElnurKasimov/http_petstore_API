@@ -98,7 +98,31 @@ public class App {
                                 }
                                 break;
                             case 4:
-                                System.out.print("14");
+                                System.out.print("id домашнего животного :");
+                                Scanner sc14 = new Scanner(System.in);
+                                long idPet14 = sc14.nextLong();
+                                System.out.print("Введите дополнительные данные для передачи на сервер : ");
+                                String additionalMetedata = sc14.nextLine();
+                                if( additionalMetedata.equals("")) additionalMetedata = sc14.nextLine();
+                                System.out.print("Для того, чтобы загрузить картинку, поместите файл в корневой каталог программы" +
+                                        " и укажите его имя (имя.расширение) : ");
+                                String photoUrl14 = sc14.nextLine();
+                                try {
+                                    if(PetService.addPhotoToPet(idPet14, photoUrl14) == 200) {
+                                        System.out.println("картинка успешно добавлена");
+                                        Pet pet = PetService.getPetByID(idPet14);
+                                        System.out.println(pet.getPhotoUrls().toString());
+                                        pet.getPhotoUrls().add(photoUrl14);
+                                        System.out.println(pet.getPhotoUrls().toString());
+                                        //todo вызвать метод update
+                                    };
+                                }
+                                catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+
+
                                 break;
                             case 5:
                                 System.out.print("15");
