@@ -56,35 +56,42 @@ public class App {
                                 break;
                             case 3:
                                 System.out.println("Введите, пожалуйста, данные по домашнему животному.");
+                                System.out.print("id домашнего животного :");
                                 Scanner sc13 = new Scanner(System.in);
-                                System.out.print("Кличка :");
+                                long idPet = sc13.nextLong();
+                                System.out.print("кличка :");
                                 String petName13 = sc13.nextLine();
-
+                                if(petName13.equals("")) petName13 = sc13.nextLine();
                                 System.out.print("id категории :");
                                 long idCategory = sc13.nextLong();
-
                                 System.out.print("название категории :");
                                 String nameCategory = sc13.nextLine();
                                 if(nameCategory.equals("")) nameCategory= sc13.nextLine();
+                                System.out.print("ссылка на фотографию :");
+                                String photoUrl = sc13.nextLine();
+                                ArrayList<String> photoUrls = new ArrayList<>();
+                                photoUrls.add(photoUrl);
+                                System.out.print("id тэга :");
+                                long idTag = sc13.nextLong();
+                                System.out.print("название тэга :");
+                                String nameTag = sc13.nextLine();
+                                if(nameTag.equals("")) nameTag = sc13.nextLine();
+                                Tag tag = Tag.builder().id(idTag).name(nameTag).build();
+                                ArrayList<Tag> tags = new ArrayList<>();
+                                tags.add(tag);
+                                System.out.print("статус домашнего животного (available,pending,sold) :");
+                                String petStatus = sc13.nextLine();
 
-                                System.out.print("фамилия полльзователя :");
-                                String lastName34 = sc13.nextLine();
-                                System.out.print("e-mail полльзователя :");
-                                String email = sc13.nextLine();
-                                System.out.print("телефон полльзователя :");
-                                String phone = sc13.nextLine();
-
-                                User newUser = User.builder().
-                                        username("Test").
-                                        firstName("ivan").
-                                        lastName("Ivanov").
-                                        email("test@test.com").
-                                        password("test1").
-                                        phone("056-123-45-67").
-                                        userStatus(userStatus).
+                                Pet newPet = Pet.builder().
+                                        id(idPet).
+                                        category(Category.builder().id(idCategory).name(nameCategory).build()).
+                                        name(nameTag).photoUrls(photoUrls).
+                                        tags(tags).
+                                        petStatus(Pet.PetStatus.valueOf(petStatus)).
                                         build();
                                 try {
-                                    CommonUtilities.createNewObject("user", newUser);
+                                    CommonUtilities.createNewObject("pet", newPet);
+
                                 }
                                 catch (Exception e) {
                                     e.printStackTrace();

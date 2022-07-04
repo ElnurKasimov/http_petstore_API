@@ -11,7 +11,9 @@ public class Pet {
     private long id;
     private Category category;
     private String name;
+    @Builder.Default
     private ArrayList<String> photoUrls = new ArrayList<>();
+    @Builder.Default
     private ArrayList<Tag> tags = new ArrayList<>();
     PetStatus petStatus;
 

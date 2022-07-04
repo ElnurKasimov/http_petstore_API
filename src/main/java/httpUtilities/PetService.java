@@ -41,7 +41,6 @@ public class PetService {
 
     public static List<Pet> getPetsByStatus(String petStatus ) throws IOException, InterruptedException {
         String requestURL = String.format("%s%s?status=%s", URL, "findByStatus", petStatus);
-        //https://petstore.swagger.io/v2/pet/findByStatus?status=pending
         HttpRequest request = HttpRequest.newBuilder().
                 uri(URI.create(requestURL)).
                 GET().
@@ -49,6 +48,8 @@ public class PetService {
         HttpResponse<String> responce =  CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         return GSON.fromJson(responce.body(), new TypeToken<List<Pet>>(){}.getType());
     }
+
+
 }
 /*
     public static void createNewObject (String endpoint, User myUser) throws IOException, InterruptedException {
