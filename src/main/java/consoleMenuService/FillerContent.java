@@ -15,7 +15,7 @@ public class FillerContent {
                 break;
             case "Pet":
                 contentMenu.put(1, "найти домашнее животное по id");
-                contentMenu.put(2, "найти домашних животных по статусу" );
+                contentMenu.put(2, "получить список домашних животных по их статусу" );
                 contentMenu.put(3, "добавить домашнее животное на склад");
                 contentMenu.put(4, "загрузить фото домашнего животного");
                 contentMenu.put(5, "обновить данные по домашнему животному c помощью формы данных");

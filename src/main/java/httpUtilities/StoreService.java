@@ -11,7 +11,7 @@ import java.net.http.HttpResponse;
 
 public class StoreService {
     public static final HttpClient CLIENT = HttpClient.newHttpClient();
-    public static final String URL = "http://petstore.swagger.io/store/";
+    public static final String URL = "https://petstore.swagger.io/v2/store/";
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
 
@@ -41,7 +41,6 @@ public class StoreService {
         System.out.println("Проверяем тело ответа. Если id у возвращенного объекта будет 11  - то все Ok.");
         System.out.println(responce.body());
     }
-
     public static void updateObject (String endpoint, User myUser) throws IOException, InterruptedException {
         String requestBody = GSON.toJson(myUser);
         HttpRequest request = HttpRequest.newBuilder()
@@ -52,9 +51,7 @@ public class StoreService {
         HttpResponse<String> responce =  CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println("Проверяем тело ответа. Если телефон у возвращенного объекта будет 123-45-67-890  - то все Ok.");
         System.out.println(responce.body());
-
     }
-
     public static int  deleteObject (String endpoint, User myUser) throws IOException, InterruptedException {
         String requestBody = GSON.toJson(myUser);
         HttpRequest request = HttpRequest.newBuilder()
@@ -63,7 +60,6 @@ public class StoreService {
                 .build();
         return CLIENT.send(request, HttpResponse.BodyHandlers.ofString()).statusCode();
     }
-
     public static List<User> getInformationAboutAllUsers (String endpoint) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder().
                 uri(URI.create(URL+endpoint)).
@@ -72,7 +68,6 @@ public class StoreService {
         HttpResponse<String> responce =  CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         return GSON.fromJson(responce.body(), new TypeToken<List<User>>(){}.getType());
     }
-
     public static User getUserInformationByID(String endpoint, int id ) throws IOException, InterruptedException {
         String requestURL = String.format("%s%s/%d", URL, endpoint, id);
         HttpRequest request = HttpRequest.newBuilder().
@@ -83,7 +78,6 @@ public class StoreService {
         System.out.println(responce.body());
         return GSON.fromJson(responce.body(), User.class);
     }
-
     public static List<User> getUserInformationByUsername(String endpoint, String username ) throws IOException, InterruptedException {
         String requestURL = String.format("%s%s?username=%s", URL, endpoint, username);
         HttpRequest request = HttpRequest.newBuilder().
@@ -93,7 +87,6 @@ public class StoreService {
         HttpResponse<String> responce =  CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         return GSON.fromJson(responce.body(), new TypeToken<List<User>>(){}.getType());
     }
-
     // Методы для  второго задания
     public static List<Post> getAllPostsDeterminedUser(String endpoint) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder().
@@ -103,7 +96,6 @@ public class StoreService {
         HttpResponse<String> responce =  CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         return GSON.fromJson(responce.body(), new TypeToken<List<Post>>(){}.getType());
     }
-
     public static String getAllCommentsOnMaxPost(String endpoint) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder().
                 uri(URI.create(URL+endpoint)).
@@ -112,7 +104,6 @@ public class StoreService {
         HttpResponse<String> responce =  CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         return responce.body();
     }
-
     // Метод для  третьего задания
     public static void getAllOpenTasks(String endpoint) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder().
@@ -127,5 +118,4 @@ public class StoreService {
                 forEach(System.out::println);
     }
 }
-
  */
