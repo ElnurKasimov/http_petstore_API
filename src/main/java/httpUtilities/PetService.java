@@ -4,12 +4,22 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+
+import java.io.*;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 
 public class PetService {
@@ -35,7 +45,6 @@ public class PetService {
                 GET().
                 build();
         HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.statusCode());
         return response.statusCode();
     }
 
@@ -49,6 +58,29 @@ public class PetService {
         return GSON.fromJson(responce.body(), new TypeToken<List<Pet>>(){}.getType());
     }
 
+    public static int addPhotoToPet (long idPet, String petUrl) throws IOException, InterruptedException {
+        String requestURL = String.format("%s%d/%s", URL, idPet, "uploadImage");
+        System.out.println(requestURL);
+        File imgToLoad = new File(petUrl);
+        InputStream fis = new FileInputStream(imgToLoad);
+        byte[] allBytes = fis.readAllBytes();
+        MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
+        CloseableHttpClient client = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(requestURL);
+        multipartEntityBuilder.addBinaryBody("file", allBytes, ContentType.DEFAULT_BINARY, "filename");
+        HttpEntity multipart = multipartEntityBuilder.build();
+        httpPost.setEntity(multipart);
+        int statusCode=0;
+        try {
+            client.execute(httpPost);
+            ResponseHandler<String> handler = new BasicResponseHandler();
+            String body = client.execute(httpPost, handler);
+            statusCode = client.execute(httpPost).getStatusLine().getStatusCode();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return statusCode;
+    }
 
 }
 /*
