@@ -56,49 +56,17 @@ public class App {
                                 break;
                             case 3:
                                 System.out.println("Введите, пожалуйста, данные по домашнему животному.");
-                                System.out.print("id домашнего животного :");
-                                Scanner sc13 = new Scanner(System.in);
-                                long idPet = sc13.nextLong();
-                                System.out.print("кличка :");
-                                String petName13 = sc13.nextLine();
-                                if(petName13.equals("")) petName13 = sc13.nextLine();
-                                System.out.print("id категории :");
-                                long idCategory = sc13.nextLong();
-                                System.out.print("название категории :");
-                                String nameCategory = sc13.nextLine();
-                                if(nameCategory.equals("")) nameCategory= sc13.nextLine();
-                                System.out.print("ссылка на фотографию :");
-                                String photoUrl = sc13.nextLine();
-                                ArrayList<String> photoUrls = new ArrayList<>();
-                                photoUrls.add(photoUrl);
-                                System.out.print("id тэга :");
-                                long idTag = sc13.nextLong();
-                                System.out.print("название тэга :");
-                                String nameTag = sc13.nextLine();
-                                if(nameTag.equals("")) nameTag = sc13.nextLine();
-                                Tag tag = Tag.builder().id(idTag).name(nameTag).build();
-                                ArrayList<Tag> tags = new ArrayList<>();
-                                tags.add(tag);
-                                System.out.print("статус домашнего животного (available,pending,sold) :");
-                                String petStatus = sc13.nextLine();
-
-                                Pet newPet = Pet.builder().
-                                        id(idPet).
-                                        category(Category.builder().id(idCategory).name(nameCategory).build()).
-                                        name(nameTag).photoUrls(photoUrls).
-                                        tags(tags).
-                                        petStatus(Pet.PetStatus.valueOf(petStatus)).
-                                        build();
+                                Pet newPet = PetService.inputAllDataOfPet();
                                 try {
                                     CommonUtilities.createNewObject("pet", newPet);
-
                                 }
                                 catch (Exception e) {
                                     e.printStackTrace();
                                 }
                                 break;
                             case 4:
-                                System.out.print("id домашнего животного :");
+                                System.out.println("Для добавления фото, внесите необходимые данные)");
+                                System.out.print("id домашнего животного : ");
                                 Scanner sc14 = new Scanner(System.in);
                                 long idPet14 = sc14.nextLong();
                                 System.out.print("Введите дополнительные данные для передачи на сервер : ");
@@ -114,24 +82,41 @@ public class App {
                                         System.out.println(pet.getPhotoUrls().toString());
                                         pet.getPhotoUrls().add(photoUrl14);
                                         System.out.println(pet.getPhotoUrls().toString());
-                                        //todo вызвать метод update
+                                        CommonUtilities.updateObject("pet", pet);
                                     };
                                 }
                                 catch (Exception e) {
                                     e.printStackTrace();
                                 }
-
-
-
                                 break;
                             case 5:
-                                System.out.print("15");
+                                System.out.println("Введите, пожалуйста, те данные по домашнему животному, которого желаете обновить. А именно : ");
+                                System.out.print("id домашнего животного : ");
+                                Scanner sc15 = new Scanner(System.in);
+                                long idPet15 = sc15.nextLong();
+                                System.out.print("кличка : ");
+                                String namePet15 = sc15.nextLine();
+                                if(namePet15.equals("")) namePet15 = sc15.nextLine();
+                                System.out.print("статус домашнего животного (available,pending,sold) : ");
+                                String petStatus15 = sc15.nextLine();
+                                Pet petToUpdateDataInForm = PetService.getPetByID(idPet15);
+                                petToUpdateDataInForm.setName(namePet15);
+                                petToUpdateDataInForm.setPetStatus(Pet.PetStatus.valueOf(petStatus15));
+                                PetService.updatePet(idPet15, namePet15, petStatus15);
                                 break;
                             case 6:
-                                System.out.print("16");
+                                System.out.println("Введите, пожалуйста, все данные по домашнему животному, которого желаете обновить.");
+                                Pet petToUpdateAllData = PetService.inputAllDataOfPet();
+                                CommonUtilities.updateObject("pet", petToUpdateAllData);
                                 break;
                             case 7:
-                                System.out.print("17");
+                                System.out.println("Введите, пожалуйста, данные по домашнему животному, которого желаете удалить из базы.");
+                                Scanner sc17 = new Scanner(System.in);
+                                System.out.print("арi ключ : ");
+                                String apiKey = sc17.nextLine();
+                                System.out.print("id домашнего животного : ");
+                                long idPet17 = sc17.nextLong();
+                                int result = CommonUtilities.deleteObject("pet", idPet17);
                         }
 
                     } while (choicePet != 8);

@@ -19,8 +19,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Scanner;
 
 public class PetService {
     public static final HttpClient CLIENT = HttpClient.newHttpClient();
@@ -81,7 +83,56 @@ public class PetService {
         }
         return statusCode;
     }
-
+    public static Pet inputAllDataOfPet(){
+        System.out.print("id домашнего животного : ");
+        Scanner sc13 = new Scanner(System.in);
+        long idPet = sc13.nextLong();
+        System.out.print("кличка : ");
+        String namePet13 = sc13.nextLine();
+        if(namePet13.equals("")) namePet13 = sc13.nextLine();
+        System.out.print("id категории : ");
+        long idCategory = sc13.nextLong();
+        System.out.print("название категории : ");
+        String nameCategory = sc13.nextLine();
+        if(nameCategory.equals("")) nameCategory= sc13.nextLine();
+        System.out.print("ссылка на фотографию : ");
+        String photoUrl = sc13.nextLine();
+        ArrayList<String> photoUrls = new ArrayList<>();
+        photoUrls.add(photoUrl);
+        System.out.print("id тэга : ");
+        long idTag = sc13.nextLong();
+        System.out.print("название тэга :");
+        String nameTag = sc13.nextLine();
+        if(nameTag.equals("")) nameTag = sc13.nextLine();
+        Tag tag = Tag.builder().id(idTag).name(nameTag).build();
+        ArrayList<Tag> tags = new ArrayList<>();
+        tags.add(tag);
+        System.out.print("статус домашнего животного (available,pending,sold) : ");
+        String petStatus = sc13.nextLine();
+        Pet newPet = Pet.builder().
+                id(idPet).
+                category(Category.builder().id(idCategory).name(nameCategory).build()).
+                name(namePet13).
+                photoUrls(photoUrls).
+                tags(tags).
+                petStatus(Pet.PetStatus.valueOf(petStatus)).
+                build();
+        return newPet;
+    }
+    public static void updatePet (long idPet, String newName, String newStatus) throws IOException, InterruptedException {
+        Pet petToUpdate = PetService.getPetByID(idPet);
+        petToUpdate.setName(newName);
+        petToUpdate.setPetStatus(Pet.PetStatus.valueOf(newStatus));
+        String requestBody = GSON.toJson(petToUpdate);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(URL + idPet))
+                .header("Content-Type", "application/json; charset=utf-8")
+                .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+        HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println("Проверяем тело ответа. Если имя у возвращенного объекта будет как ввели новое - то все Ok.");
+        System.out.println(responce.body());
+    }
 }
 /*
     public static void createNewObject (String endpoint, User myUser) throws IOException, InterruptedException {
@@ -106,14 +157,7 @@ public class PetService {
         System.out.println("Проверяем тело ответа. Если телефон у возвращенного объекта будет 123-45-67-890  - то все Ok.");
         System.out.println(responce.body());
     }
-    public static int  deleteObject (String endpoint, User myUser) throws IOException, InterruptedException {
-        String requestBody = GSON.toJson(myUser);
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(URL+endpoint))
-                .method("DELETE", HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
-        return CLIENT.send(request, HttpResponse.BodyHandlers.ofString()).statusCode();
-    }
+
     public static List<User> getInformationAboutAllUsers (String endpoint) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder().
                 uri(URI.create(URL+endpoint)).
