@@ -57,6 +57,7 @@ public class App {
                             case 3:
                                 System.out.println("Введите, пожалуйста, данные по домашнему животному.");
                                 Pet newPet = PetService.inputAllDataOfPet();
+                                System.out.println(newPet);
                                 try {
                                     CommonUtilities.createNewObject("pet", newPet);
                                 }

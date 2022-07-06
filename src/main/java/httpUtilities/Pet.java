@@ -15,13 +15,8 @@ public class Pet {
     private ArrayList<String> photoUrls = new ArrayList<>();
     @Builder.Default
     private ArrayList<Tag> tags = new ArrayList<>();
-    PetStatus petStatus;
+    private String petStatus;
 
-    public enum PetStatus {
-        available,
-        pending,
-        sold
-    }
 
     @Override
     public String toString() {

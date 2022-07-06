@@ -93,7 +93,7 @@ public class PetService {
                 name(namePet13).
                 photoUrls(photoUrls).
                 tags(tags).
-                petStatus(Pet.PetStatus.valueOf(petStatus)).
+                petStatus(petStatus).
                 build();
         return newPet;
     }

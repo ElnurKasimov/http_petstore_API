@@ -44,7 +44,6 @@ public class CommonUtilities {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(responce.body());
         if (responce.statusCode() == 200 ) {
             System.out.println("Домашнее животное успешно добавлено в базу данных");
         } else {
