@@ -45,10 +45,44 @@ public class CommonUtilities {
                 .build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(responce.body());
-
+        if (responce.statusCode() == 200 ) {
+            System.out.println("Домашнее животное успешно добавлено в базу данных");
+        } else {
+            System.out.println("Что-то пошло не так и домашнее животное не было добавлено в базу данных");
+        }
     }
 
+    public static void updateObject(String endpoint, Object newObject) throws IOException, InterruptedException {
+        String requestBody = GSON.toJson(newObject);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(URL + endpoint))
+                .header("Content-Type", "application/json; charset=utf-8")
+                .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+        HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(responce.body());
+        if (responce.statusCode() == 200 ) {
+            System.out.println("Данные по домашнему животному успешно обновлены");
+        } else {
+            System.out.println("Что-то пошло не так и данные по домашнему животному не были обновлены");
+        }
+    }
 
+    public static int  deleteObject (String endpoint, Object object) throws IOException, InterruptedException {
+        String requestBody = GSON.toJson(object);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(URL+endpoint))
+                .method("DELETE", HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+        System.out.println(CLIENT.send(request, HttpResponse.BodyHandlers.ofString()).body());
+        int result = CLIENT.send(request, HttpResponse.BodyHandlers.ofString()).statusCode();
 
+        if (result == 200 ) {
+            System.out.println("Домашнее животное успешно удалено");
+        } else {
+            System.out.println("Что-то пошло не так и домашнее животное не было удалено");
+        }
+        return result;
+    }
 
 }

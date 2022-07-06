@@ -5,20 +5,22 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.io.*;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -95,31 +97,18 @@ public class PetService {
                 build();
         return newPet;
     }
-    public static void updatePet (long idPet, String newName, String newStatus) throws IOException, InterruptedException {
-        Pet petToUpdate = PetService.getPetByID(idPet);
-        petToUpdate.setName(newName);
-        petToUpdate.setPetStatus(Pet.PetStatus.valueOf(newStatus));
-        String requestBody = GSON.toJson(petToUpdate);
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(URL + idPet))
-                .header("Content-Type", "application/json; charset=utf-8")
-                .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
-        HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println("Проверяем тело ответа. Если имя у возвращенного объекта будет как ввели новое - то все Ok.");
-        System.out.println(responce.body());
-    }
-    public static int addPhotoToPet (long idPet, String petUrl) throws IOException, InterruptedException {
+
+    public static int addPhotoToPet (long idPet, String petUrl, String additionalMetadata) throws IOException, InterruptedException {
         String requestURL = String.format("%s%d/%s", URL, idPet, "uploadImage");
-        System.out.println(requestURL);
         File imgToLoad = new File(petUrl);
         InputStream fis = new FileInputStream(imgToLoad);
         byte[] allBytes = fis.readAllBytes();
-        MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
         CloseableHttpClient client = HttpClients.createDefault();
+        HttpEntity multipart = MultipartEntityBuilder.create().
+                addTextBody("additionalMetadata", additionalMetadata, ContentType.TEXT_PLAIN).
+                addBinaryBody("file", allBytes, ContentType.DEFAULT_BINARY, imgToLoad.getName()).
+                build();
         HttpPost httpPost = new HttpPost(requestURL);
-        multipartEntityBuilder.addBinaryBody("file", allBytes, ContentType.DEFAULT_BINARY, "filename");
-        HttpEntity multipart = multipartEntityBuilder.build();
         httpPost.setEntity(multipart);
         int statusCode=0;
         try {
@@ -132,6 +121,36 @@ public class PetService {
         }
         return statusCode;
     }
+
+    public static int updatePetByFormData (long idPet, String newName, String newStatus) throws IOException, InterruptedException {
+        String requestURL = String.format("%s%d", URL, idPet);
+        CloseableHttpClient client = HttpClients.createDefault();
+        //https://www.programcreek.com/java-api-examples/?class=org.apache.http.client.entity.UrlEncodedFormEntity&method=setContentType
+
+
+        HttpPost httpPost = new HttpPost(requestURL);
+        List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+        nameValuePairList.add(new BasicNameValuePair("name", newName));
+        nameValuePairList.add(new BasicNameValuePair("status", newStatus));
+
+        UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(nameValuePairList, "utf-8");
+        formEntity.setContentType("application/x-www-form-urlencoded; charset=UTF-8");
+        httpPost.setEntity(formEntity);
+
+        int statusCode=0;
+        try {
+            client.execute(httpPost);
+            ResponseHandler<String> handler = new BasicResponseHandler();
+            String body = client.execute(httpPost, handler);
+            statusCode = client.execute(httpPost).getStatusLine().getStatusCode();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return statusCode;
+
+    }
+
+
 
 }
 /*

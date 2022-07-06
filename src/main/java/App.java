@@ -76,10 +76,15 @@ public class App {
                                         " и укажите его имя (имя.расширение) : ");
                                 String photoUrl14 = sc14.nextLine();
                                 try {
-                                    if(200 == PetService.addPhotoToPet(idPet14, photoUrl14)) {
+                                    if(200 == PetService.addPhotoToPet(idPet14, photoUrl14, additionalMetedata)) {
                                         System.out.println("картинка успешно добавлена");
                                         Pet pet = PetService.getPetByID(idPet14);
-                                        System.out.println(pet.getPhotoUrls().toString());
+                                        System.out.println(pet);
+                                        if (pet.getPhotoUrls() != null ) {
+                                            System.out.println(pet.getPhotoUrls().toString());
+                                         } else {
+                                            System.out.println("[]");
+                                        }
                                         pet.getPhotoUrls().add(photoUrl14);
                                         System.out.println(pet.getPhotoUrls().toString());
                                         CommonUtilities.updateObject("pet", pet);
@@ -90,19 +95,26 @@ public class App {
                                 }
                                 break;
                             case 5:
-                                System.out.println("Введите, пожалуйста, те данные по домашнему животному, которого желаете обновить. А именно : ");
                                 System.out.print("id домашнего животного : ");
                                 Scanner sc15 = new Scanner(System.in);
                                 long idPet15 = sc15.nextLong();
-                                System.out.print("кличка : ");
+                                System.out.println("Введите, пожалуйста, те данные по домашнему животному, которого желаете обновить. А именно : ");
+                                System.out.print("новая кличка : ");
                                 String namePet15 = sc15.nextLine();
                                 if(namePet15.equals("")) namePet15 = sc15.nextLine();
-                                System.out.print("статус домашнего животного (available,pending,sold) : ");
+                                System.out.print("новый статус домашнего животного (available,pending,sold) : ");
                                 String petStatus15 = sc15.nextLine();
-                                Pet petToUpdateDataInForm = PetService.getPetByID(idPet15);
+                                /*
                                 petToUpdateDataInForm.setName(namePet15);
                                 petToUpdateDataInForm.setPetStatus(Pet.PetStatus.valueOf(petStatus15));
-                                PetService.updatePet(idPet15, namePet15, petStatus15);
+                                */
+                                if  (PetService.updatePetByFormData(idPet15, namePet15, petStatus15) == 200) {
+                                    System.out.println("Данные успешно обновлены");
+                                    Pet petUpdatedByFormData = PetService.getPetByID(idPet15);
+                                    System.out.println(petUpdatedByFormData);
+                                } else {
+                                    System.out.println("Данные не изменены. Скорее всего был некорректный ввод данных");
+                                }
                                 break;
                             case 6:
                                 System.out.println("Введите, пожалуйста, все данные по домашнему животному, которого желаете обновить.");
@@ -172,7 +184,7 @@ public class App {
                         choiceUser = menuService.get("User").makeChoice();
                         switch (choiceUser) {
                             case 1:
-                                System.out.println("31");
+                                System.out.println("https://www.baeldung.com/httpclient-post-http-request");
                                 break;
                             case 2:
                                 System.out.print("32");
