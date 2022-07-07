@@ -8,12 +8,24 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class StoreService {
     public static final HttpClient CLIENT = HttpClient.newHttpClient();
     public static final String URL = "https://petstore.swagger.io/v2/store/";
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
+
+    public static void getInventory() throws IOException, InterruptedException {
+        String requestURL = String.format("%s%s", URL, "inventory");
+        HttpRequest request = HttpRequest.newBuilder().
+                uri(URI.create(requestURL)).
+                GET().
+                build();
+        HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(responce.body().replaceAll(",", ",\n"));
+    }
 
     public static Order getOrderByID(String endpoint, long id) throws IOException, InterruptedException {
         String requestURL = String.format("%s%s/%d", URL, endpoint, id);
@@ -22,10 +34,31 @@ public class StoreService {
                 GET().
                 build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(responce.body());
         return GSON.fromJson(responce.body(), Order.class);
     }
 
+    public static Order inputAllDataOfOrder(){
+        System.out.print("id заказа (от 1 до 9 включительно) : ");
+        Scanner sc = new Scanner(System.in);
+        long idPet = sc.nextLong();
+        System.out.print("id домашнего животного : ");
+        long petId = sc.nextLong();
+        System.out.print("количество : ");
+        int quantity = sc.nextInt();
+        System.out.print("дата отгрузки (ГГГГ-ММ-ДД) : ");
+        String shipDate = sc.nextLine();
+        if(shipDate.equals("")) shipDate = sc.nextLine();
+        System.out.print("статус заказа (placed, approved, delivered) : ");
+        String status = sc.nextLine();
+        Order newOrder = Order.builder().
+                id(idPet).
+                petId(petId).
+                quantity(quantity).
+                shipDate(shipDate).
+                status(Order.Status.valueOf(status)).
+                build();
+        return newOrder;
+    }
 
 
 }

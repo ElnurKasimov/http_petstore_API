@@ -17,7 +17,6 @@ public class Pet {
     private ArrayList<Tag> tags = new ArrayList<>();
     private String petStatus;
 
-
     @Override
     public String toString() {
         return "Pet{\n" +

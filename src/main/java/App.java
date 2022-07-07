@@ -105,10 +105,6 @@ public class App {
                                 if(namePet15.equals("")) namePet15 = sc15.nextLine();
                                 System.out.print("новый статус домашнего животного (available,pending,sold) : ");
                                 String petStatus15 = sc15.nextLine();
-                                /*
-                                petToUpdateDataInForm.setName(namePet15);
-                                petToUpdateDataInForm.setPetStatus(Pet.PetStatus.valueOf(petStatus15));
-                                */
                                 if  (PetService.updatePetByFormData(idPet15, namePet15, petStatus15) == 200) {
                                     System.out.println("Данные успешно обновлены");
                                     Pet petUpdatedByFormData = PetService.getPetByID(idPet15);
@@ -129,7 +125,7 @@ public class App {
                                 String apiKey = sc17.nextLine();
                                 System.out.print("id домашнего животного : ");
                                 long idPet17 = sc17.nextLong();
-                                int result = CommonUtilities.deleteObject("pet", idPet17);
+                                CommonUtilities.deleteObject("pet", idPet17);
                         }
 
                     } while (choicePet != 8);
@@ -141,21 +137,11 @@ public class App {
                         choiceStore = menuService.get("Store").makeChoice();
                         switch (choiceStore) {
                             case 1:
-                                /*
-                                System.out.print("Введите id :");
-                                Scanner sc21 = new Scanner(System.in);
-                                long id = sc21.nextLong();
-                                try {
-                                    Pet pet = PetService.getPetByID("pet", id);
-                                }
-                                catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                */
+                                StoreService.getInventory();
                                 break;
                             case 2:
                                 System.out.println("Обратите внимание, что номер заказа должен быть в пределах от 1 до 10. иначе будет выброшена ошибка ввода.");
-                                System.out.print("Введите id :");
+                                System.out.print("Введите id : ");
                                 Scanner sc22 = new Scanner(System.in);
                                 long orderId22 = sc22.nextLong();
                                 try {
@@ -171,10 +157,22 @@ public class App {
                                 }
                                 break;
                             case 3:
-                                System.out.print("23");
+                                System.out.println("Введите, пожалуйста, данные по заказу, который надо разместить.");
+                                Order newOrder = StoreService.inputAllDataOfOrder();
+                                System.out.println(newOrder);
+                                try {
+                                    CommonUtilities.createNewObject("store/order", newOrder);
+                                }
+                                catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                                 break;
                             case 4:
-                                System.out.print("24");
+                                System.out.print("Введите, пожалуйста, данные по заказу, который желаете удалить из базы.");
+                                Scanner sc24 = new Scanner(System.in);
+                                System.out.print("id домашнего животного (1 - 9) : ");
+                                long orderId24 = sc24.nextLong();
+                                CommonUtilities.deleteObject("store/order/" + orderId24, StoreService.getOrderByID("order", orderId24));
                         }
                     } while (choiceStore != 5);
                     break;

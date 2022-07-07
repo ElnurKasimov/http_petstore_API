@@ -45,9 +45,9 @@ public class CommonUtilities {
                 .build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         if (responce.statusCode() == 200 ) {
-            System.out.println("Домашнее животное успешно добавлено в базу данных");
+            System.out.println(newObject.getClass().getName().replaceAll("httpUtilities.", "") + " успешно добавлен в базу данных");
         } else {
-            System.out.println("Что-то пошло не так и домашнее животное не было добавлено в базу данных");
+            System.out.println("Что-то пошло не так и " + newObject.getClass().getName().replaceAll("httpUtilities.", "") + " не был добавлен в базу данных");
         }
     }
 
@@ -59,29 +59,31 @@ public class CommonUtilities {
                 .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(responce.body());
+        //System.out.println(responce.body());
         if (responce.statusCode() == 200 ) {
-            System.out.println("Данные по домашнему животному успешно обновлены");
+            System.out.println("Данные по " + newObject.getClass().getName().replaceAll("httpUtilities.", "") + " успешно обновлены");
         } else {
-            System.out.println("Что-то пошло не так и данные по домашнему животному не были обновлены");
+            System.out.println("Что-то пошло не так и данные по "  + newObject.getClass().getName().replaceAll("httpUtilities.", "") + " не были обновлены");
         }
     }
 
-    public static int  deleteObject (String endpoint, Object object) throws IOException, InterruptedException {
+    public static void deleteObject (String endpoint, Object object) throws IOException, InterruptedException {
+        System.out.println(object);
+        System.out.println(URL+endpoint);
         String requestBody = GSON.toJson(object);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(URL+endpoint))
                 .method("DELETE", HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
-        System.out.println(CLIENT.send(request, HttpResponse.BodyHandlers.ofString()).body());
-        int result = CLIENT.send(request, HttpResponse.BodyHandlers.ofString()).statusCode();
-
+        HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(responce.body());
+        int result = responce.statusCode();
+        System.out.println(result);
         if (result == 200 ) {
-            System.out.println("Домашнее животное успешно удалено");
+            System.out.println(object.getClass().getName().replaceAll("httpUtilities.", "") + " успешно удален");
         } else {
-            System.out.println("Что-то пошло не так и домашнее животное не было удалено");
+            System.out.println("Что-то пошло не так и "  + object.getClass().getName().replaceAll("httpUtilities.", "") + " не был удален");
         }
-        return result;
     }
 
 }
