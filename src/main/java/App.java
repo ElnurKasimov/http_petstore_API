@@ -125,7 +125,8 @@ public class App {
                                 String apiKey = sc17.nextLine();
                                 System.out.print("id домашнего животного : ");
                                 long idPet17 = sc17.nextLong();
-                                CommonUtilities.deleteObject("pet", idPet17);
+                                Pet petToDelete = PetService.getPetByID(idPet17);
+                                CommonUtilities.deleteObject("pet/" + idPet17, petToDelete);
                         }
 
                     } while (choicePet != 8);
