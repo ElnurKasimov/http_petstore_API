@@ -184,10 +184,16 @@ public class App {
                         choiceUser = menuService.get("User").makeChoice();
                         switch (choiceUser) {
                             case 1:
-                                System.out.println("https://www.baeldung.com/httpclient-post-http-request");
+                                //  https://www.baeldung.com/httpclient-post-http-request
+                                System.out.print("Введите имя пользователя : ");
+                                Scanner sc31 = new Scanner(System.in);
+                                String nameForLogIn = sc31.nextLine();
+                                System.out.print("Введите пароль пользователя : ");
+                                String passwordForLogIn = sc31.nextLine();
+                                UserService.logsUser(nameForLogIn, passwordForLogIn);
                                 break;
                             case 2:
-                                System.out.print("32");
+                                UserService.logsOutUser();
                                 break;
                             case 3:
                                 System.out.print("Введите userName пользователя : ");
