@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Scanner;
 
 public class UserService {
     public static final HttpClient CLIENT = HttpClient.newHttpClient();
@@ -43,21 +44,52 @@ public class UserService {
         }
     }
 
-
-
-
+    public static int isUserExist(String userName) throws IOException, InterruptedException {
+        String requestURL = String.format("%s/%s", URL, userName);
+        HttpRequest request = HttpRequest.newBuilder().
+                uri(URI.create(requestURL)).
+                GET().
+                build();
+        HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.statusCode();
+    }
     public static User getUserByUsername(String userName) throws IOException, InterruptedException {
-        String requestURL = String.format("%s%s", URL, userName);
+        String requestURL = String.format("%s/%s", URL, userName);
         HttpRequest request = HttpRequest.newBuilder().
                 uri(URI.create(requestURL)).
                 GET().
                 build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(responce.body());
         return GSON.fromJson(responce.body(), User.class);
     }
 
-
+    public static User inputAllDataOfUser () {
+        Scanner sc34 = new Scanner(System.in);
+        System.out.print("userName пользователя :");
+        String userName34 = sc34.nextLine();
+        System.out.print("имя пользователя :");
+        String firstName34 = sc34.nextLine();
+        System.out.print("фамилия пользователя :");
+        String lastName34 = sc34.nextLine();
+        System.out.print("e-mail пользователя :");
+        String email = sc34.nextLine();
+        System.out.print("пароль пользователя :");
+        String password = sc34.nextLine();
+        System.out.print("телефон пользователя :");
+        String phone = sc34.nextLine();
+        System.out.print("статус пользователя :");
+        int userStatus = sc34.nextInt();
+        User newUser = User.builder().
+                username(userName34).
+                firstName(firstName34).
+                lastName(lastName34).
+                email(email).
+                password(password).
+                phone(phone).
+                userStatus(userStatus).
+                build();
+        return newUser;
+    }
 
 
 }

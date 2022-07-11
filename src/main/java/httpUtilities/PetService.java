@@ -41,16 +41,6 @@ public class PetService {
         return GSON.fromJson(responce.body(), Pet.class);
     }
 
-    public static int isPetExist(long petId) throws IOException, InterruptedException {
-        String requestURL = String.format("%s%d", URL, petId);
-        HttpRequest request = HttpRequest.newBuilder().
-                uri(URI.create(requestURL)).
-                GET().
-                build();
-        HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        return response.statusCode();
-    }
-
     public static List<Pet> getPetsByStatus(String petStatus ) throws IOException, InterruptedException {
         String requestURL = String.format("%s%s?status=%s", URL, "findByStatus", petStatus);
         HttpRequest request = HttpRequest.newBuilder().

@@ -57,7 +57,6 @@ public class App {
                             case 3:
                                 System.out.println("Введите, пожалуйста, данные по домашнему животному.");
                                 Pet newPet = PetService.inputAllDataOfPet();
-                                System.out.println(newPet);
                                 try {
                                     CommonUtilities.createNewObject("pet", newPet);
                                 }
@@ -160,7 +159,6 @@ public class App {
                             case 3:
                                 System.out.println("Введите, пожалуйста, данные по заказу, который надо разместить.");
                                 Order newOrder = StoreService.inputAllDataOfOrder();
-                                System.out.println(newOrder);
                                 try {
                                     CommonUtilities.createNewObject("store/order", newOrder);
                                 }
@@ -206,7 +204,6 @@ public class App {
                                     } else {
                                         System.out.println("Пользователя с таким именем не существует");
                                     }
-
                                 }
                                 catch (Exception e) {
                                     e.printStackTrace();
@@ -214,44 +211,49 @@ public class App {
                                 break;
                             case 4:
                                 System.out.println("Введите, пожалуйста, данные по пользователю.");
-                                Scanner sc34 = new Scanner(System.in);
-                                System.out.print("userName пользователя :");
-                                String userName34 = sc34.nextLine();
-                                System.out.print("имя пользователя :");
-                                String firstName34 = sc34.nextLine();
-                                System.out.print("фамилия пользователя :");
-                                String lastName34 = sc34.nextLine();
-                                System.out.print("e-mail пользователя :");
-                                String email = sc34.nextLine();
-                                System.out.print("телефон пользователя :");
-                                String phone = sc34.nextLine();
-                                System.out.print("статус пользователя :");
-                                int userStatus = sc34.nextInt();
-                                User newUser = User.builder().
-                                        username("Test").
-                                        firstName("ivan").
-                                        lastName("Ivanov").
-                                        email("test@test.com").
-                                        password("test1").
-                                        phone("056-123-45-67").
-                                        userStatus(userStatus).
-                                        build();
+                                User newUser = UserService.inputAllDataOfUser();
                                 try {
                                     CommonUtilities.createNewObject("user", newUser);
-                                    //if ()
                                 }
                                 catch (Exception e) {
                                     e.printStackTrace();
                                 }
                                 break;
                             case 5:
-                                System.out.print("35");
+
                                 break;
                             case 6:
-                                System.out.print("36");
+                                System.out.print("Введите, пожалуйста, имя пользователя, которого желаете обновить : ");
+                                Scanner sc36 = new Scanner(System.in);
+                                String nameToUpdate = sc36.nextLine();
+                                try {
+                                    if (CommonUtilities.isObjectExist("user", nameToUpdate) == 200) {
+                                        System.out.println("Введите, пожалуйста, все данные по пользователю, которого желаете обновить.");
+                                        User userToUpdate = UserService.inputAllDataOfUser();
+                                        CommonUtilities.updateObject("user/" + nameToUpdate, userToUpdate);
+                                    } else {
+                                        System.out.println("Пользователя с таким именем не существует");
+                                    }
+                                }
+                                catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                                 break;
                             case 7:
-                                System.out.print("37");
+                                System.out.print("Введите, пожалуйста, имя пользователя, которого желаете удалить из системы : ");
+                                Scanner sc37 = new Scanner(System.in);
+                                String nameToDelete = sc37.nextLine();
+                                try {
+                                    if (CommonUtilities.isObjectExist("user", nameToDelete) == 200) {
+                                        User userToDelete = UserService.getUserByUsername(nameToDelete);
+                                        CommonUtilities.deleteObject("user/" + nameToDelete, userToDelete);
+                                    } else {
+                                        System.out.println("Пользователя с таким именем не существует");
+                                    }
+                                }
+                                catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                         }
                     } while (choiceUser != 8);
                     break;
