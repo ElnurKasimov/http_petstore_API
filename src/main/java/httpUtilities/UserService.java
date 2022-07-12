@@ -8,6 +8,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserService {
@@ -65,8 +67,11 @@ public class UserService {
 
     public static User inputAllDataOfUser () {
         Scanner sc34 = new Scanner(System.in);
+        System.out.print("id пользователя :");
+        long userId = sc34.nextLong();
         System.out.print("userName пользователя :");
         String userName34 = sc34.nextLine();
+        if(userName34.equals("")) userName34 = sc34.nextLine();
         System.out.print("имя пользователя :");
         String firstName34 = sc34.nextLine();
         System.out.print("фамилия пользователя :");
@@ -80,6 +85,7 @@ public class UserService {
         System.out.print("статус пользователя :");
         int userStatus = sc34.nextInt();
         User newUser = User.builder().
+                id(userId).
                 username(userName34).
                 firstName(firstName34).
                 lastName(lastName34).
@@ -91,5 +97,39 @@ public class UserService {
         return newUser;
     }
 
+    public static void createListOfNewUsers (List<User> newUsers) throws IOException, InterruptedException {
+        String requestURL = String.format("%s%s", URL, "/createWithList");
+        String requestBody = GSON.toJson(newUsers);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(requestURL))
+                .header("Content-Type", "application/json; charset=utf-8")
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+        HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+        if (responce.statusCode() == 200 ) {
+            System.out.println(newUsers);
+            System.out.println("список " + newUsers.get(0).getClass().getName().replaceAll("httpUtilities.", "") + "-ов успешно добавлен в базу данных");
+        } else {
+            System.out.println("Что-то пошло не так и список " + newUsers.get(0).getClass().getName().replaceAll("httpUtilities.", "") + "-ов не был добавлен в базу данных");
+        }
+    }
+
+    public static List<User> createListOfUsersForTest() {
+        List<User> users = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            User newUser = User.builder().
+                    id(123123123+i).
+                    username("name" + i).
+                    firstName("firstName" + i).
+                    lastName("lastName" + i).
+                    email("test" + i + "@gmail.com").
+                    password("password" + i).
+                    phone("067-123-45-0" + i).
+                    userStatus(1).
+                    build();
+            users.add(newUser);
+        }
+        return users;
+    }
 
 }

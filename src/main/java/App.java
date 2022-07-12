@@ -220,7 +220,13 @@ public class App {
                                 }
                                 break;
                             case 5:
-
+                                List<User> usersForTest = UserService.createListOfUsersForTest();
+                                try {
+                                    UserService.createListOfNewUsers(usersForTest);
+                                }
+                                catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                                 break;
                             case 6:
                                 System.out.print("Введите, пожалуйста, имя пользователя, которого желаете обновить : ");
