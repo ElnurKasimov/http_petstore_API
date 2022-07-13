@@ -7,7 +7,7 @@ import java.util.Optional;
 public class MenuService {
     private Map<String, Menu> elementsMenu = new HashMap<String, Menu>();
 
-    public void create() {
+    public void createTopLevelOfMenu() {
         FillerContent fillerMenuContent = new FillerContent();
 
         Menu mainMenu = new Menu("Main");
@@ -28,7 +28,7 @@ public class MenuService {
 
     }
 
-    public Menu get (String name) {
+    public Menu getMenuObjectByName(String name) {
         Menu result = null;
         Optional<Menu> optionalResult = Optional.empty();
         for (Map.Entry<String, Menu> entry : elementsMenu.entrySet()) {

@@ -1,4 +1,4 @@
-package httpUtilities;
+package store;
 
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +11,7 @@ public class Order {
     private long petId;
     public int quantity;
     private String shipDate;
-    private Status status;
+    private Status STATUS;
 
     public enum Status{
         placed,
@@ -25,6 +25,6 @@ public class Order {
                 "\t\"petId=\": \"" + petId + "\",\n" +
                 "\t\"quantity\": \"" + quantity + "\",\n" +
                 "\t\"shipDate\": \"" + shipDate + "\",\n" +
-                "\t\"status\": \"" + status + "\",\n" + "}";
+                "\t\"status\": \"" + STATUS + "\",\n" + "}";
     }
 }

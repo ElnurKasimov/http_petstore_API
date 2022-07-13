@@ -1,4 +1,4 @@
-package httpUtilities;
+package pet;
 
 import lombok.Builder;
 import lombok.Data;

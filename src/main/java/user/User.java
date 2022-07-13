@@ -1,4 +1,4 @@
-package httpUtilities;
+package user;
 
 import lombok.Builder;
 import lombok.Data;

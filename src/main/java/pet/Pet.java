@@ -1,7 +1,10 @@
-package httpUtilities;
+package pet;
 
 import lombok.Builder;
 import lombok.Data;
+import pet.Category;
+import pet.Tag;
+
 import java.util.ArrayList;
 
 @Data

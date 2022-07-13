@@ -1,14 +1,14 @@
-package httpUtilities;
+package store;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import store.Order;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class StoreService {
@@ -55,7 +55,7 @@ public class StoreService {
                 petId(petId).
                 quantity(quantity).
                 shipDate(shipDate).
-                status(Order.Status.valueOf(status)).
+                STATUS(Order.Status.valueOf(status)).
                 build();
         return newOrder;
     }
