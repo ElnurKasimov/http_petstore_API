@@ -1,5 +1,6 @@
 package pet;
 
+import com.google.gson.Gson;
 import httpUtilities.CommonUtilities;
 
 import java.io.IOException;
@@ -31,7 +32,8 @@ public class PetMenuService {
         String petStaus = sc.nextLine();
         try {
             List<Pet> pets = PetHttpService.getPetsByStatus(petStaus);
-            System.out.println(pets.toString());
+            Gson gson = new Gson();
+            System.out.println(gson.toJson(pets));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -47,7 +49,6 @@ public class PetMenuService {
             e.printStackTrace();
         }
     }
-
     public static void uploadPetPhoto () {
         System.out.println("Для добавления фото, внесите необходимые данные)");
         System.out.print("id домашнего животного : ");
@@ -78,7 +79,6 @@ public class PetMenuService {
             e.printStackTrace();
         }
     }
-
     public static Pet inputAllDataOfPet(){
         System.out.print("id домашнего животного : ");
         Scanner sc = new Scanner(System.in);
@@ -114,7 +114,6 @@ public class PetMenuService {
                 petStatus(petStatus).
                 build();
     }
-
     public static void updatePetByFormData() throws IOException, InterruptedException {
         System.out.print("id домашнего животного : ");
         Scanner sc = new Scanner(System.in);
@@ -133,13 +132,11 @@ public class PetMenuService {
             System.out.println("Данные не изменены. Скорее всего был некорректный ввод данных");
         }
     }
-
     public static void updatePetAllData() throws IOException, InterruptedException {
         System.out.println("Введите, пожалуйста, все данные по домашнему животному, которого желаете обновить.");
         Pet petToUpdateAllData = PetMenuService.inputAllDataOfPet();
         CommonUtilities.updateObject("pet", petToUpdateAllData);
     }
-
     public static void deletePet() throws IOException, InterruptedException {
         System.out.println("Введите, пожалуйста, данные по домашнему животному, которого желаете удалить из базы.");
         Scanner sc = new Scanner(System.in);

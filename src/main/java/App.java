@@ -1,22 +1,17 @@
 import consoleMenuService.*;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Scanner;
 
-import httpUtilities.*;
 import pet.PetMenuService;
-import store.Order;
-import store.StoreService;
-import user.User;
-import user.UserService;
+import store.StoreHttpService;
+import store.StoreMenuService;
+import user.UserHttpService;
+import user.UserMenuService;
 
 public class App {
     public static void main(String[] args) throws IOException, InterruptedException {
-
         MenuService menuService = new MenuService();
         menuService.createTopLevelOfMenu();
-
         int choice;
         do {
             menuService.getMenuObjectByName("Main").printMenu();
@@ -58,41 +53,17 @@ public class App {
                         choiceStore = menuService.getMenuObjectByName("Store").makeChoice();
                         switch (choiceStore) {
                             case 1:
-                                StoreService.getInventory();
+                                StoreHttpService.getInventory();
                                 break;
                             case 2:
-                                System.out.println("Обратите внимание, что номер заказа должен быть в пределах от 1 до 10. иначе будет выброшена ошибка ввода.");
-                                System.out.print("Введите id : ");
-                                Scanner sc22 = new Scanner(System.in);
-                                long orderId22 = sc22.nextLong();
-                                try {
-                                    if (CommonUtilities.isObjectExist("pet/order", orderId22) == 200) {
-                                        Order order = StoreService.getOrderByID("store", orderId22);
-                                        System.out.println(order);
-                                    } else {
-                                        System.out.println("Заказа с таким id не существует");
-                                    }
-                                }
-                                catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                                StoreMenuService.findOrderById();
                                 break;
                             case 3:
-                                System.out.println("Введите, пожалуйста, данные по заказу, который надо разместить.");
-                                Order newOrder = StoreService.inputAllDataOfOrder();
-                                try {
-                                    CommonUtilities.createNewObject("pet/order", newOrder);
-                                }
-                                catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                                StoreMenuService.placeOrder();
                                 break;
                             case 4:
-                                System.out.print("Введите, пожалуйста, данные по заказу, который желаете удалить из базы.");
-                                Scanner sc24 = new Scanner(System.in);
-                                System.out.print("id домашнего животного (1 - 9) : ");
-                                long orderId24 = sc24.nextLong();
-                                CommonUtilities.deleteObject("pet/order/" + orderId24, StoreService.getOrderByID("store", orderId24));
+                                StoreMenuService.deleteOrder();
+
                         }
                     } while (choiceStore != 5);
                     break;
@@ -103,87 +74,28 @@ public class App {
                         choiceUser = menuService.getMenuObjectByName("User").makeChoice();
                         switch (choiceUser) {
                             case 1:
-                                System.out.print("Введите имя пользователя : ");
-                                Scanner sc31 = new Scanner(System.in);
-                                String nameForLogIn = sc31.nextLine();
-                                System.out.print("Введите пароль пользователя : ");
-                                String passwordForLogIn = sc31.nextLine();
-                                UserService.logsUser(nameForLogIn, passwordForLogIn);
+                                UserMenuService.logInUser();
                                 break;
                             case 2:
-                                UserService.logsOutUser();
+                                UserHttpService.logsOutUser();
                                 break;
                             case 3:
-                                System.out.print("Введите userName пользователя : ");
-                                Scanner sc33 = new Scanner(System.in);
-                                String userName33 = sc33.nextLine();
-                                try {
-                                    if (CommonUtilities.isObjectExist("user", userName33) == 200) {
-                                        User user = UserService.getUserByUsername(userName33);
-                                        System.out.println(user);
-                                    } else {
-                                        System.out.println("Пользователя с таким именем не существует");
-                                    }
-                                }
-                                catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                                UserMenuService.findUserByName();
                                 break;
                             case 4:
-                                System.out.println("Введите, пожалуйста, данные по пользователю.");
-                                User newUser = UserService.inputAllDataOfUser();
-                                try {
-                                    CommonUtilities.createNewObject("user", newUser);
-                                }
-                                catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                                UserMenuService.addUser();
                                 break;
                             case 5:
-                                List<User> usersForTest = UserService.createListOfUsersForTest();
-                                try {
-                                    UserService.createListOfNewUsers(usersForTest);
-                                }
-                                catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                                UserMenuService.addListOfUsers();
                                 break;
                             case 6:
-                                System.out.print("Введите, пожалуйста, имя пользователя, которого желаете обновить : ");
-                                Scanner sc36 = new Scanner(System.in);
-                                String nameToUpdate = sc36.nextLine();
-                                try {
-                                    if (CommonUtilities.isObjectExist("user", nameToUpdate) == 200) {
-                                        System.out.println("Введите, пожалуйста, все данные по пользователю, которого желаете обновить.");
-                                        User userToUpdate = UserService.inputAllDataOfUser();
-                                        CommonUtilities.updateObject("user/" + nameToUpdate, userToUpdate);
-                                    } else {
-                                        System.out.println("Пользователя с таким именем не существует");
-                                    }
-                                }
-                                catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                                UserMenuService.updateUser();
                                 break;
                             case 7:
-                                System.out.print("Введите, пожалуйста, имя пользователя, которого желаете удалить из системы : ");
-                                Scanner sc37 = new Scanner(System.in);
-                                String nameToDelete = sc37.nextLine();
-                                try {
-                                    if (CommonUtilities.isObjectExist("user", nameToDelete) == 200) {
-                                        User userToDelete = UserService.getUserByUsername(nameToDelete);
-                                        CommonUtilities.deleteObject("user/" + nameToDelete, userToDelete);
-                                    } else {
-                                        System.out.println("Пользователя с таким именем не существует");
-                                    }
-                                }
-                                catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                                UserMenuService.deleteUser();
                         }
                     } while (choiceUser != 8);
                     break;
-
             }
         } while (choice != 4);
     }

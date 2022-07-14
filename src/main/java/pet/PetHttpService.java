@@ -23,7 +23,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+
 
 public class PetHttpService {
     public static final HttpClient CLIENT = HttpClient.newHttpClient();
@@ -39,7 +39,6 @@ public class PetHttpService {
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         return GSON.fromJson(responce.body(), Pet.class);
     }
-
     public static List<Pet> getPetsByStatus(String petStatus ) throws IOException, InterruptedException {
         String requestURL = String.format("%s%s?status=%s", URL, "findByStatus", petStatus);
         HttpRequest request = HttpRequest.newBuilder().
@@ -49,7 +48,6 @@ public class PetHttpService {
         HttpResponse<String> responce =  CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         return GSON.fromJson(responce.body(), new TypeToken<List<Pet>>(){}.getType());
     }
-
     public static int addPhotoToPet (long idPet, String petUrl, String additionalMetadata) throws IOException, InterruptedException {
         String requestURL = String.format("%s%d/%s", URL, idPet, "uploadImage");
         File imgToLoad = new File(petUrl);
@@ -73,7 +71,6 @@ public class PetHttpService {
         }
         return statusCode;
     }
-
     public static int updatePetByFormData (long idPet, String newName, String newStatus) throws IOException, InterruptedException {
         String requestURL = String.format("%s%d", URL, idPet);
         CloseableHttpClient client = HttpClients.createDefault();
@@ -95,5 +92,4 @@ public class PetHttpService {
         }
         return statusCode;
     }
-
 }
