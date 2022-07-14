@@ -42,4 +42,15 @@ public class MenuService {
         return result;
     }
 
+    public static Choice convertChoiceToEnum (int choice) {
+        Choice result = Choice.valueOf("PET");
+        switch (choice) {
+            case 1 -> result = Choice.valueOf("PET");
+            case 2 -> result = Choice.valueOf("STORE");
+            case 3 -> result = Choice.valueOf("USER");
+            case 4 -> result = Choice.valueOf("EXIT");
+        }
+        return result;
+    }
+
 }

@@ -13,11 +13,13 @@ public class App {
         MenuService menuService = new MenuService();
         menuService.createTopLevelOfMenu();
         int choice;
+        Choice choiceEnum = Choice.PET;
         do {
             menuService.getMenuObjectByName("Main").printMenu();
             choice = menuService.getMenuObjectByName("Main").makeChoice();
-            switch (choice) {
-                case 1:
+            choiceEnum  = MenuService.convertChoiceToEnum(choice);
+            switch (choiceEnum) {
+                case PET:
                     int choicePet;
                     do {
                         menuService.getMenuObjectByName("Pet").printMenu();
@@ -46,7 +48,7 @@ public class App {
                         }
                     } while (choicePet != 8);
                     break;
-                case 2:
+                case STORE:
                     int choiceStore;
                     do {
                         menuService.getMenuObjectByName("Store").printMenu();
@@ -66,7 +68,7 @@ public class App {
                         }
                     } while (choiceStore != 5);
                     break;
-                case 3:
+                case USER:
                     int choiceUser;
                     do {
                         menuService.getMenuObjectByName("User").printMenu();
@@ -96,6 +98,6 @@ public class App {
                     } while (choiceUser != 8);
                     break;
             }
-        } while (choice != 4);
+        } while (!choiceEnum.equals(Choice.EXIT));
     }
 }
