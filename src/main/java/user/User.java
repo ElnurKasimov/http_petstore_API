@@ -15,18 +15,4 @@ public class User {
     private String phone;
     private int userStatus;
 
-
-    @Override
-    public String toString() {
-        return "user{\n" +
-                "\t\"id=\": " + id + ",\n" +
-                "\t\"username\": \"" + username + "\",\n" +
-                "\t\"firstName\": \"" + firstName + "\",\n" +
-                "\t\"lastName\": \"" + lastName + "\",\n" +
-                "\t\"email\": \"" + email + "\",\n" +
-                "\t\"password\": \"" + password + "\",\n" +
-                "\t\"phone\": \"" + phone + "\",\n" +
-                "\t\"userStatus\": \"" + userStatus + "\",\n" + "}";
-    }
-
 }

@@ -63,7 +63,6 @@ public class App {
                                 break;
                             case 4:
                                 StoreMenuService.deleteOrder();
-
                         }
                     } while (choiceStore != 5);
                     break;

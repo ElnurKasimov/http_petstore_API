@@ -20,14 +20,4 @@ public class Pet {
     private ArrayList<Tag> tags = new ArrayList<>();
     private String petStatus;
 
-    @Override
-    public String toString() {
-        return "Pet{\n" +
-                "\t\"id=\": \"" + id + "\",\n" +
-                "\t\"category\": \"" + category.toString() + "\",\n" +
-                "\t\"name\": \"" + name + "\",\n" +
-                "\t\"photos\": \"" + photoUrls.toString() + "\",\n" +
-                "\t\"tags\": \"" + tags.toString() + "\",\n" +
-                "\t\"status\": \"" + petStatus + "\",\n" + "}";
-    }
 }

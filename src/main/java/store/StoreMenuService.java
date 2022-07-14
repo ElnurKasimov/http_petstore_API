@@ -1,5 +1,6 @@
 package store;
 
+import com.google.gson.Gson;
 import httpUtilities.CommonUtilities;
 
 import java.util.Scanner;
@@ -13,7 +14,8 @@ public class StoreMenuService {
         try {
             if (CommonUtilities.isObjectExist("pet/order", orderId) == 200) {
                 Order order = StoreHttpService.getOrderByID("store", orderId);
-                System.out.println(order);
+                Gson gson = new Gson();
+                System.out.println(gson.toJson(order));
             } else {
                 System.out.println("Заказа с таким id не существует");
             }
@@ -59,7 +61,7 @@ public class StoreMenuService {
         System.out.print("id домашнего животного (1 - 9) : ");
         long orderId = sc.nextLong();
         try {
-        CommonUtilities.deleteObject("pet/order/" + orderId, StoreHttpService.getOrderByID("store", orderId));
+            CommonUtilities.deleteObject("pet/order/" + orderId, StoreHttpService.getOrderByID("store", orderId));
         }
         catch (Exception e) {
             e.printStackTrace();

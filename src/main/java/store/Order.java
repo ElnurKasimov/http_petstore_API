@@ -18,13 +18,5 @@ public class Order {
         approved,
         delivered
     }
-    @Override
-    public String toString() {
-        return "Order{\n" +
-                "\t\"id=\": \"" + id + "\",\n" +
-                "\t\"petId=\": \"" + petId + "\",\n" +
-                "\t\"quantity\": \"" + quantity + "\",\n" +
-                "\t\"shipDate\": \"" + shipDate + "\",\n" +
-                "\t\"status\": \"" + STATUS + "\",\n" + "}";
-    }
+
 }

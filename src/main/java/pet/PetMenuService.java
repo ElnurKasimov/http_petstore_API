@@ -64,13 +64,8 @@ public class PetMenuService {
             if(200 == PetHttpService.addPhotoToPet(idPet, photoUrl, additionalMetedata)) {
                 System.out.println("картинка успешно добавлена");
                 Pet pet = PetHttpService.getPetByID(idPet);
-                System.out.println(pet);
-                if (pet.getPhotoUrls() != null ) {
-                    System.out.println(pet.getPhotoUrls().toString());
-                } else {
-                    System.out.println("[]");
-                }
                 pet.getPhotoUrls().add(photoUrl);
+                System.out.println("Теперь список ссылок на кртинки домашнего животного следующий:");
                 System.out.println(pet.getPhotoUrls().toString());
                 CommonUtilities.updateObject("pet", pet);
             };
@@ -114,7 +109,7 @@ public class PetMenuService {
                 petStatus(petStatus).
                 build();
     }
-    public static void updatePetByFormData() throws IOException, InterruptedException {
+    public static void updatePetByFormData() {
         System.out.print("id домашнего животного : ");
         Scanner sc = new Scanner(System.in);
         long idPet = sc.nextLong();
@@ -124,27 +119,43 @@ public class PetMenuService {
         if(namePet.equals("")) namePet = sc.nextLine();
         System.out.print("новый статус домашнего животного (available,pending,sold) : ");
         String petStatus = sc.nextLine();
-        if  (PetHttpService.updatePetByFormData(idPet, namePet, petStatus) == 200) {
-            System.out.println("Данные успешно обновлены");
-            Pet petUpdatedByFormData = PetHttpService.getPetByID(idPet);
-            System.out.println(petUpdatedByFormData);
-        } else {
-            System.out.println("Данные не изменены. Скорее всего был некорректный ввод данных");
+        try {
+            if (PetHttpService.updatePetByFormData(idPet, namePet, petStatus) == 200) {
+                System.out.println("Данные успешно обновлены");
+                Pet petUpdatedByFormData = PetHttpService.getPetByID(idPet);
+                Gson gson = new Gson();
+                System.out.println(gson.toJson(petUpdatedByFormData));
+            } else {
+                System.out.println("Данные не изменены. Скорее всего был некорректный ввод данных");
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
-    public static void updatePetAllData() throws IOException, InterruptedException {
+    public static void updatePetAllData() {
         System.out.println("Введите, пожалуйста, все данные по домашнему животному, которого желаете обновить.");
         Pet petToUpdateAllData = PetMenuService.inputAllDataOfPet();
-        CommonUtilities.updateObject("pet", petToUpdateAllData);
+        try {
+            CommonUtilities.updateObject("pet", petToUpdateAllData);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    public static void deletePet() throws IOException, InterruptedException {
+    public static void deletePet() {
         System.out.println("Введите, пожалуйста, данные по домашнему животному, которого желаете удалить из базы.");
         Scanner sc = new Scanner(System.in);
         System.out.print("арi ключ : ");
         String apiKey = sc.nextLine();
         System.out.print("id домашнего животного : ");
         long idPet = sc.nextLong();
-        Pet petToDelete = PetHttpService.getPetByID(idPet);
-        CommonUtilities.deleteObject("pet/" + idPet, petToDelete);
+        try {
+            Pet petToDelete = PetHttpService.getPetByID(idPet);
+            CommonUtilities.deleteObject("pet/" + idPet, petToDelete);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

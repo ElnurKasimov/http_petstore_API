@@ -1,5 +1,6 @@
 package user;
 
+import com.google.gson.Gson;
 import httpUtilities.CommonUtilities;
 
 import java.util.List;
@@ -56,7 +57,8 @@ public class UserMenuService {
         try {
             if (CommonUtilities.isObjectExist("user", userName) == 200) {
                 User user = UserHttpService.getUserByUsername(userName);
-                System.out.println(user);
+                Gson gson = new Gson();
+                System.out.println(gson.toJson(user));
             } else {
                 System.out.println("Пользователя с таким именем не существует");
             }
@@ -103,8 +105,8 @@ public class UserMenuService {
     }
     public static void deleteUser() {
         System.out.print("Введите, пожалуйста, имя пользователя, которого желаете удалить из системы : ");
-        Scanner sc37 = new Scanner(System.in);
-        String nameToDelete = sc37.nextLine();
+        Scanner sc = new Scanner(System.in);
+        String nameToDelete = sc.nextLine();
         try {
             if (CommonUtilities.isObjectExist("user", nameToDelete) == 200) {
                 User userToDelete = UserHttpService.getUserByUsername(nameToDelete);
