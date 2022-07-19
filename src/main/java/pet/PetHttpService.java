@@ -26,9 +26,9 @@ import java.util.List;
 
 
 public class PetHttpService {
-    public static final HttpClient CLIENT = HttpClient.newHttpClient();
-    public static final String URL = "https://petstore.swagger.io/v2/pet/";
-    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final HttpClient CLIENT = HttpClient.newHttpClient();
+    private static final String URL = "https://petstore.swagger.io/v2/pet/";
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static Pet getPetByID(long id) throws IOException, InterruptedException {
         String requestURL = String.format("%s%d", URL, id);

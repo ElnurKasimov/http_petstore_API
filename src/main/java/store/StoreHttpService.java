@@ -10,9 +10,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class StoreHttpService {
-    public static final HttpClient CLIENT = HttpClient.newHttpClient();
-    public static final String URL = "https://petstore.swagger.io/v2/store/";
-    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final HttpClient CLIENT = HttpClient.newHttpClient();
+    private static final String URL = "https://petstore.swagger.io/v2/store/";
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static void getInventory() throws IOException, InterruptedException {
         String requestURL = String.format("%s%s", URL, "inventory");

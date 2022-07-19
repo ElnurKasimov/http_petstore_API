@@ -9,9 +9,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class CommonUtilities {
-    public static final HttpClient CLIENT = HttpClient.newHttpClient();
-    public static final String URL = "https://petstore.swagger.io/v2/";
-    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final HttpClient CLIENT = HttpClient.newHttpClient();
+    private static final String URL = "https://petstore.swagger.io/v2/";
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final int RESPONCE_CODE_OK = 200;
 
     public static int isObjectExist(String endpoint, String name) throws IOException, InterruptedException {
         String requestURL = String.format("%s%s/%s", URL, endpoint,  name);
@@ -40,7 +41,7 @@ public class CommonUtilities {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        if (responce.statusCode() == 200 ) {
+        if (responce.statusCode() == RESPONCE_CODE_OK ) {
             System.out.println(newObject);
             System.out.println(newObject.getClass().getName().replaceAll("httpUtilities.", "") + " успешно добавлен в базу данных");
         } else {
@@ -55,7 +56,7 @@ public class CommonUtilities {
                 .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        if (responce.statusCode() == 200 ) {
+        if (responce.statusCode() == RESPONCE_CODE_OK ) {
             System.out.println("Данные по " + newObject.getClass().getName().replaceAll("httpUtilities.", "") + " успешно обновлены");
         } else {
             System.out.println("Что-то пошло не так и данные по "  + newObject.getClass().getName().replaceAll("httpUtilities.", "") + " не были обновлены");
@@ -69,7 +70,7 @@ public class CommonUtilities {
                 .method("DELETE", HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        if (responce.statusCode() == 200 ) {
+        if (responce.statusCode() == RESPONCE_CODE_OK ) {
             System.out.println(object.getClass().getName().replaceAll("httpUtilities.", "") + " успешно удален");
         } else {
             System.out.println("Что-то пошло не так и "  + object.getClass().getName().replaceAll("httpUtilities.", "") + " не был удален");

@@ -15,6 +15,7 @@ public class UserHttpService {
     public static final HttpClient CLIENT = HttpClient.newHttpClient();
     public static final String URL = "https://petstore.swagger.io/v2/user";
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final int RESPONCE_CODE_OK = 200;
 
     public static void logsUser(String userName, String password) throws IOException, InterruptedException {
         String requestURL = String.format("%s/login?username=%s&password=%s", URL, userName, password);
@@ -23,7 +24,7 @@ public class UserHttpService {
                 GET().
                 build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        if (responce.statusCode() == 200 ) {
+        if (responce.statusCode() == RESPONCE_CODE_OK ) {
             System.out.println("Авторизация " +  userName + " прошла успешно");
         } else {
             System.out.println("Что-то пошло не так и  "  + userName + " не авторизовался в системе");
@@ -36,7 +37,7 @@ public class UserHttpService {
                 GET().
                 build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        if (responce.statusCode() == 200 ) {
+        if (responce.statusCode() == RESPONCE_CODE_OK) {
             System.out.println("Пользователь с текущей авторизацией успешно вышел из системы");
         } else {
             System.out.println("Что-то пошло не так и пользователь с текущей авторизацией  не  вышел из системы");
@@ -69,7 +70,7 @@ public class UserHttpService {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        if (responce.statusCode() == 200 ) {
+        if (responce.statusCode() == RESPONCE_CODE_OK ) {
             System.out.println(newUsers);
             System.out.println("список " + newUsers.get(0).getClass().getName().replaceAll("httpUtilities.", "") + "-ов успешно добавлен в базу данных");
         } else {
