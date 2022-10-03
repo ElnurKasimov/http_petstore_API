@@ -1,4 +1,4 @@
-package consoleMenuService;
+package console;
 
 import java.util.HashMap;
 
@@ -27,13 +27,13 @@ public class FillerContent {
                 contentMenu.put(1, "get pet inventories by status");
                 contentMenu.put(2, "find purchase order by id");
                 contentMenu.put(3, "place an order for a pet");
-                contentMenu.put(4, "delete perchase order by id");
+                contentMenu.put(4, "delete purchase order by id");
                 contentMenu.put(5, "return to the previous menu");
                 break;
             case "User":
                 contentMenu.put(1, "logs user into the system");
                 contentMenu.put(2, "logs out current logged in user session" );
-                contentMenu.put(3, "find user by name");
+                contentMenu.put(3, "find user by username");
                 contentMenu.put(4, "create user");
                 contentMenu.put(5, "create list of users with given input array");
                 contentMenu.put(6, "update user");

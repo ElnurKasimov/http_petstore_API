@@ -1,10 +1,10 @@
-package consoleMenuService;
+package pet;
 
-import pet.PetMenuService;
+import console.MenuService;
 
 public class PetMenuHandler {
     private MenuService menuService;
-    private static final int EXIT_FROM_PET_NENU = 8;
+    private static final int EXIT_FROM_PET_MENU = 8;
 
     public PetMenuHandler(MenuService menuService) {
         this.menuService = menuService;
@@ -18,31 +18,31 @@ public class PetMenuHandler {
             choicePet = menuService.getMenuObjectByName("Pet").makeChoice();
             switch (choicePet) {
                 case 1:
-                    PetMenuService.findPetById();
+                    PetConsoleService.findPetById();
                     break;
                 case 2:
-                    PetMenuService.printLIstOfPetsByStatus();
+                    PetConsoleService.printListOfPetsByStatus();
                     break;
                 case 3:
-                    PetMenuService.addPetToDatabase();
+                    PetConsoleService.addPetToDatabase();
                     break;
                 case 4:
-                    PetMenuService.uploadPetPhoto();
+                    PetConsoleService.uploadPetPhoto();
                     break;
                 case 5:
-                    PetMenuService.updatePetByFormData();
+                    PetConsoleService.updatePetByFormData();
                     break;
                 case 6:
-                    PetMenuService.updatePetAllData();
+                    PetConsoleService.updatePetAllData();
                     break;
                 case 7:
-                    PetMenuService.deletePet();
+                    PetConsoleService.deletePet();
                     break;
                 default:
-                    System.out.println("Введено неверное значение - пожалуйста, повторите");
+                    System.out.println("Unappropriated number has been entered, please enter correct data.");
                     break;
             }
-        } while (choicePet != EXIT_FROM_PET_NENU);
+        } while (choicePet != EXIT_FROM_PET_MENU);
     }
 
 }

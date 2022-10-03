@@ -1,4 +1,4 @@
-package consoleMenuService;
+package console;
 
 import lombok.*;
 
@@ -17,7 +17,7 @@ public class Menu {
     }
 
     public void printMenu () {
-        if(name.equals("Main")) {System.out.println("\tIn this resource You can operate with such срфзеукы:");}
+        if(name.equals("Main")) {System.out.println("\tIn this resource You can operate with such chapters:");}
         else {System.out.println("\tIn this chapter You can:");}
         for (Map.Entry<Integer, String> element : contentMenu.entrySet()) {
             System.out.println(element.getKey() + " - " + element.getValue());

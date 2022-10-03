@@ -1,4 +1,4 @@
-package consoleMenuService;
+package console;
 
 import java.util.HashMap;
 import java.util.Map;

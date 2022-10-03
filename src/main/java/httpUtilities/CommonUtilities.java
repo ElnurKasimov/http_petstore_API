@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
 
 public class CommonUtilities {
     private static final HttpClient CLIENT = HttpClient.newHttpClient();
@@ -41,13 +42,15 @@ public class CommonUtilities {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        if (responce.statusCode() == RESPONCE_CODE_OK ) {
+        if ( (responce.statusCode() / RESPONCE_CODE_OK ) == 1) {
             System.out.println(newObject);
-            System.out.println(newObject.getClass().getName().replaceAll("httpUtilities.", "") + " успешно добавлен в базу данных");
+
+            System.out.println(newObject.getClass().getName().split("\\.")[1] + " successfully added into the database");
         } else {
-            System.out.println("Что-то пошло не так и " + newObject.getClass().getName().replaceAll("httpUtilities.", "") + " не был добавлен в базу данных");
+            System.out.println("Something went wrong and " + newObject.getClass().getName().split("\\.")[1] + " hasn't been added into the database");
         }
     }
+
     public static void updateObject(String endpoint, Object newObject) throws IOException, InterruptedException {
         String requestBody = GSON.toJson(newObject);
         HttpRequest request = HttpRequest.newBuilder()
@@ -56,10 +59,10 @@ public class CommonUtilities {
                 .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        if (responce.statusCode() == RESPONCE_CODE_OK ) {
-            System.out.println("Данные по " + newObject.getClass().getName().replaceAll("httpUtilities.", "") + " успешно обновлены");
+        if ( (responce.statusCode() / RESPONCE_CODE_OK ) == 1) {
+            System.out.println("Data for " + newObject.getClass().getName().split("\\.")[1] + " successfully have been updated.");
         } else {
-            System.out.println("Что-то пошло не так и данные по "  + newObject.getClass().getName().replaceAll("httpUtilities.", "") + " не были обновлены");
+            System.out.println("Something went wrong and "  + newObject.getClass().getName().split("\\.")[1] + " haven't been updated.");
         }
     }
     public static void deleteObject (String endpoint, Object object) throws IOException, InterruptedException {
@@ -71,9 +74,9 @@ public class CommonUtilities {
                 .build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         if (responce.statusCode() == RESPONCE_CODE_OK ) {
-            System.out.println(object.getClass().getName().replaceAll("httpUtilities.", "") + " успешно удален");
+            System.out.println(object.getClass().getName().split("\\.")[1] + " has been successfully deleted");
         } else {
-            System.out.println("Что-то пошло не так и "  + object.getClass().getName().replaceAll("httpUtilities.", "") + " не был удален");
+            System.out.println("Something went wrong and "  + object.getClass().getName().split("\\.")[1]+ " hasn't been deleted.");
         }
     }
 }

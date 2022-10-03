@@ -1,4 +1,4 @@
-package consoleMenuService;
+package console;
 
 public enum Choice {
     PET,

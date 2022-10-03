@@ -15,7 +15,7 @@ public class UserHttpService {
     public static final HttpClient CLIENT = HttpClient.newHttpClient();
     public static final String URL = "https://petstore.swagger.io/v2/user";
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final int RESPONCE_CODE_OK = 200;
+    private static final int STATUS_CODE_OK = 200;
 
     public static void logsUser(String userName, String password) throws IOException, InterruptedException {
         String requestURL = String.format("%s/login?username=%s&password=%s", URL, userName, password);
@@ -24,34 +24,26 @@ public class UserHttpService {
                 GET().
                 build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        if (responce.statusCode() == RESPONCE_CODE_OK ) {
-            System.out.println("Авторизация " +  userName + " прошла успешно");
+        if ((responce.statusCode() / STATUS_CODE_OK) == 1 ) {
+            System.out.println("Authorization of " +  userName + " successfully completed");
         } else {
-            System.out.println("Что-то пошло не так и  "  + userName + " не авторизовался в системе");
+            System.out.println("Something went wrong and  "  + userName + "hasn't been  authorized in the system.");
         }
     }
-    public static void logsOutUser() throws IOException, InterruptedException {
+    public static void logOutUser() throws IOException, InterruptedException {
         String requestURL = String.format("%s/logout", URL);
         HttpRequest request = HttpRequest.newBuilder().
                 uri(URI.create(requestURL)).
                 GET().
                 build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        if (responce.statusCode() == RESPONCE_CODE_OK) {
-            System.out.println("Пользователь с текущей авторизацией успешно вышел из системы");
+        if ((responce.statusCode() / STATUS_CODE_OK) == 1 ) {
+            System.out.println("User with current authorization successfully logs out from the system");
         } else {
-            System.out.println("Что-то пошло не так и пользователь с текущей авторизацией  не  вышел из системы");
+            System.out.println("Something went wrong and user with current authorization doesn't  log out from the system");
         }
     }
-    public static int isUserExist(String userName) throws IOException, InterruptedException {
-        String requestURL = String.format("%s/%s", URL, userName);
-        HttpRequest request = HttpRequest.newBuilder().
-                uri(URI.create(requestURL)).
-                GET().
-                build();
-        HttpResponse<String> response = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        return response.statusCode();
-    }
+
     public static User getUserByUsername(String userName) throws IOException, InterruptedException {
         String requestURL = String.format("%s/%s", URL, userName);
         HttpRequest request = HttpRequest.newBuilder().
@@ -70,13 +62,16 @@ public class UserHttpService {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
         HttpResponse<String> responce = CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
-        if (responce.statusCode() == RESPONCE_CODE_OK ) {
+        if ((responce.statusCode() / STATUS_CODE_OK) == 1 ) {
             System.out.println(newUsers);
-            System.out.println("список " + newUsers.get(0).getClass().getName().replaceAll("httpUtilities.", "") + "-ов успешно добавлен в базу данных");
+            System.out.printf("List of  %ss  has been successfully added in the database.\n",
+                    newUsers.get(0).getClass().getName().split("\\.")[1]);
         } else {
-            System.out.println("Что-то пошло не так и список " + newUsers.get(0).getClass().getName().replaceAll("httpUtilities.", "") + "-ов не был добавлен в базу данных");
+            System.out.printf("Something went wrong and list of  %ss hasn't been added in the database.\n",
+                    newUsers.get(0).getClass().getName().split("\\.")[1]);
         }
     }
+
     public static List<User> createListOfUsersForTest() {
         List<User> users = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -94,4 +89,5 @@ public class UserHttpService {
         }
         return users;
     }
+
 }

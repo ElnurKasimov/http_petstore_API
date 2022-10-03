@@ -1,25 +1,20 @@
-import consoleMenuService.*;
+import console.*;
 
 import java.io.IOException;
 
-import pet.PetMenuService;
-import store.StoreHttpService;
-import store.StoreMenuService;
-import user.UserHttpService;
-import user.UserMenuService;
+import pet.PetMenuHandler;
+import store.StoreMenuHandler;
+import user.UserMenuHandler;
 
 public class App {
-    private static final int EXIT_FROM_MAIN_NENU = 4;
+    private static final int EXIT_FROM_MAIN_MENU = 4;
 
-    private static final int EXIT_FROM_STORE_NENU = 5;
-    private static final int EXIT_FROM_USER_NENU = 8;
-
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) {
         MenuService menuService = new MenuService();
-        menuService.createTopLevelOfMenu();
-        PetMenuService petMenuService = new PetMenuService();
         PetMenuHandler petMenuHandler = new PetMenuHandler(menuService);
-
+        StoreMenuHandler storeMenuHandler = new StoreMenuHandler(menuService);
+        UserMenuHandler userMenuHandler = new UserMenuHandler(menuService);
+        menuService.createTopLevelOfMenu();
         int choice;
         do {
             menuService.getMenuObjectByName("Main").printMenu();
@@ -29,66 +24,16 @@ public class App {
                     petMenuHandler.launch();
                     break;
                 case 2:
-                    int choiceStore;
-                    do {
-                        menuService.getMenuObjectByName("Store").printMenu();
-                        choiceStore = menuService.getMenuObjectByName("Store").makeChoice();
-                        switch (choiceStore) {
-                            case 1:
-                                StoreHttpService.getInventory();
-                                break;
-                            case 2:
-                                StoreMenuService.findOrderById();
-                                break;
-                            case 3:
-                                StoreMenuService.placeOrder();
-                                break;
-                            case 4:
-                                StoreMenuService.deleteOrder();
-                            default:
-                                System.out.println("Введено неверное значение - пожалуйста, повторите");
-                                break;
-                        }
-                    } while (choiceStore != EXIT_FROM_STORE_NENU);
+                    storeMenuHandler.launch();
                     break;
                 case 3:
-                    int choiceUser;
-                    do {
-                        menuService.getMenuObjectByName("User").printMenu();
-                        choiceUser = menuService.getMenuObjectByName("User").makeChoice();
-                        switch (choiceUser) {
-                            case 1:
-                                UserMenuService.logInUser();
-                                break;
-                            case 2:
-                                UserHttpService.logsOutUser();
-                                break;
-                            case 3:
-                                UserMenuService.findUserByName();
-                                break;
-                            case 4:
-                                UserMenuService.addUser();
-                                break;
-                            case 5:
-                                UserMenuService.addListOfUsers();
-                                break;
-                            case 6:
-                                UserMenuService.updateUser();
-                                break;
-                            case 7:
-                                UserMenuService.deleteUser();
-                            default:
-                                System.out.println("Введено неверное значение - пожалуйста, повторите");
-                                break;
-                        }
-                    } while (choiceUser != EXIT_FROM_USER_NENU);
+                     userMenuHandler.launch();
                     break;
                 default:
-                    System.out.println("Введено неверное значение - пожалуйста, повторите");
+                    System.out.println("Unappropriated number has been entered, please enter correct data.");
                     break;
             }
-        } while (choice != EXIT_FROM_MAIN_NENU);
+        } while (choice != EXIT_FROM_MAIN_MENU);
     }
-
 
 }
