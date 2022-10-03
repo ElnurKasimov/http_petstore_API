@@ -17,12 +17,12 @@ public class Menu {
     }
 
     public void printMenu () {
-        if(name.equals("Main")) {System.out.println("\tНа данном ресурсе вы можете работать с такими разделами:");}
-        else {System.out.println("\tВ данном разделе вы можете:");}
+        if(name.equals("Main")) {System.out.println("\tIn this resource You can operate with such срфзеукы:");}
+        else {System.out.println("\tIn this chapter You can:");}
         for (Map.Entry<Integer, String> element : contentMenu.entrySet()) {
             System.out.println(element.getKey() + " - " + element.getValue());
         }
-        System.out.print("Сделайте свой выбор (1,2,3 и т.д.) : ");
+        System.out.print("Make Your choice, please (1,2,3 etc.) : ");
     }
 
     public int makeChoice() {
@@ -45,7 +45,7 @@ public class Menu {
         }
         if (result) return result;
         else {
-            System.out.print("\tВы сделали невозможный выбор, пожалуйста повторите :");
+            System.out.print("\tYou have made impossible choice. Please, enter correct data :");
             return result;
         }
     }

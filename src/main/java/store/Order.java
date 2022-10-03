@@ -12,6 +12,7 @@ public class Order {
     public int quantity;
     private String shipDate;
     private Status STATUS;
+    private String complete;
 
     public enum Status{
         placed,

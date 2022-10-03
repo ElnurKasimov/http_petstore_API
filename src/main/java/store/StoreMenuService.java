@@ -43,6 +43,7 @@ public class StoreMenuService {
                 quantity(quantity).
                 shipDate(shipDate).
                 STATUS(Order.Status.valueOf(status)).
+                complete("true").
                 build();
     }
     public static void placeOrder() {
